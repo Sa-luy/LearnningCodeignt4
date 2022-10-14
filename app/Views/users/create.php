@@ -39,6 +39,8 @@
                         <input type="text" value="" class="form-control" name="name">
                         <label for="">Email</label>
                         <input type="email" value="" class="form-control" name="email">
+                        <label for="">Phone</label>
+                        <input type="number" value="" class="form-control" name="phone">
                         <label for="">Address</label>
                         <input type="text" value="" class="form-control" name="address">
                         <label for="">Day of birth</label>

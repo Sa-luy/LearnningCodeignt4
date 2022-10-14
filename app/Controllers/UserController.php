@@ -3,14 +3,26 @@
 namespace App\Controllers;
 
 use App\Models\User;
+use CodeIgniter\HTTP\Response;
 
 class UserController extends BaseController
 {
     public function index()
     {
-        $user = new User();
+        $keywords = $this->request->getPost('keywords');
+        $userModel = new User();
+        if (isset($keywords)) {
+            $data['users']  = $userModel->findByKeywords($keywords);
+    //         echo "<pre>";
+    //    print_r ( $data['users'] );
+    //    echo "</pre>";
+    //    die();
+            
+        }else {
+            
+            $data['users'] = $userModel->orderBy('id', 'DESC')->findAll();
+        }
 
-        $data['users'] = $user->orderBy('id', 'DESC')->findAll();
 
         return view('users/index', $data);
     }
@@ -22,22 +34,25 @@ class UserController extends BaseController
     {
 
         $user_rule = [
-            'name'         => 'required',
-            'email'     => 'required|valid_email',
-            'address'     => 'required',
+            'name'             => 'required',
+            'email'            => 'required|valid_email',
+            'phone'            => 'required',
+            'address'          => 'required',
             'day_of_birth'     => 'required',
-            'gender'     => 'required',
-            'righst_group_id'     => 'required',
+            'gender'           => 'required',
+            'righst_group_id'  => 'required',
         ];
 
         if (strtolower($this->request->getMethod()) === 'post') {
             if ($this->validate($user_rule)) {
+
                 $userModel = model(User::class);
                 $userData = [
                     'name'                 => $this->request->getPost('name'),
-                    'email'              => $this->request->getPost('email'),
-                    'address'           => $this->request->getPost('address'),
-                    'gender'             => $this->request->getPost('gender'),
+                    'email'                => $this->request->getPost('email'),
+                    'phone'                => $this->request->getPost('phone'),
+                    'address'              => $this->request->getPost('address'),
+                    'gender'               => $this->request->getPost('gender'),
                     'day_of_birth'         => $this->request->getPost('day_of_birth'),
                     'rights_group_id '     => $this->request->getPost('righst_group_id'),
                 ];
@@ -82,6 +97,7 @@ class UserController extends BaseController
         $user_rule = [
             'name'             => 'required',
             'email'            => 'required|valid_email',
+            'phone'            => 'required|',
             'address'          => 'required',
             'day_of_birth'     => 'required',
             'gender'           => 'required',
@@ -96,6 +112,7 @@ class UserController extends BaseController
             $userData = [
                 'name'                 => $this->request->getPost('name'),
                 'email'                => $this->request->getPost('email'),
+                'phone'                => $this->request->getPost('phone'),
                 'address'              => $this->request->getPost('address'),
                 'gender'               => $this->request->getPost('gender'),
                 'day_of_birth'         => $this->request->getPost('day_of_birth'),
@@ -118,11 +135,13 @@ class UserController extends BaseController
     {
         $userModel = new User();
         $data['user'] = $userModel->where('id', $id)->delete($id);
-     
-       if (  $data['user']) {
-        return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
-    } else {
-        return redirect()->back()->with('message_error', 'Failed update change!');
-    }
+
+        if ($data['user']) {
+            //     $data['statusCode'] = 200;
+            //   $this->response->setStatusCode(200);
+            return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
+        } else {
+            return redirect()->back()->with('message_error', 'Failed update change!');
+        }
     }
 }
