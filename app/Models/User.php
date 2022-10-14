@@ -15,6 +15,7 @@ class User extends Model
         'day_of_birth',
         'rights_group_id',
     ];
+   
 }
 
 

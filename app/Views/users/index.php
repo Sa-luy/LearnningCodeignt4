@@ -62,7 +62,7 @@
                                         <td>
                                             <a href="<?= base_url('usersEdit/'.$user['id']) ?>"><i class="bi bi-pencil-fill"></i></a>
                                             <a href="#"><i class="bi bi-eye"></i></a>
-                                            <a href="<?= base_url('usersDestroy/'.$user['id']) ?>"><i class="bi bi-trash"></i></a>
+                                            <a href="<?= base_url('usersDestroy/'.$user['id']) ?>" onclick="return confirm('Delete movie data? You will not be able to recover it.');"><i class="bi bi-trash text-danger"></i></a>
                                             
                                         </td>
                                     </tr>

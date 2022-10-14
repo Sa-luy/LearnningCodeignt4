@@ -116,6 +116,13 @@ class UserController extends BaseController
     }
     public function destroy($id)
     {
-        echo $id;
+        $userModel = new User();
+        $data['user'] = $userModel->where('id', $id)->delete($id);
+     
+       if (  $data['user']) {
+        return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
+    } else {
+        return redirect()->back()->with('message_error', 'Failed update change!');
+    }
     }
 }
