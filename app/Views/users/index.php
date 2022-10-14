@@ -15,35 +15,27 @@
                             <div class="search-bar">
                                 <form class="search-form d-flex align-items-center" method="POST" action="<?= base_url('usersSearch') ?>">
                                     <?= csrf_field() ?>
-                                    <input type="text" name="keywords" placeholder="Search User" title="Enter search keyword">
-                                    <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+                                    <input type="text" name="keywords" placeholder="Search User" title="Enter search keyword" class="form-control">
+                                    <button type="submit" title="Search" class="form-control "><i class="bi bi-search text-secondary"></i></button>
                                 </form>
                             </div>
                         </div>
                         <!-- <div class="col-6 mb-3"></div> -->
                     </div>
-                    <div class="row">
+                    <div class="col-6">
 
                         <h4>List User</h4>
-                        <?php if (isset($_SESSION['message_noti'])) : ?>
+                        <?php if (session('message_noti')) : ?>
                             <div class="alert alert-success" role="alert">
-                                <p><?= $_SESSION['message_noti'] ?></p>
+                                <p><?= session('message_noti') ?></p>
                             </div>
                         <?php endif; ?>
 
-                        <?php if (isset($_SESSION['message_error'])) : ?>
+                        <?php if (session('message_error')) : ?>
                             <div class="alert alert-danger" role="alert">
-                                <?= $_SESSION['message_error'] ?>
+                                <?= session('message_error')?>
                             </div>
                         <?php endif; ?>
-                        <?php if (isset($validation)) : ?>
-                            <div class="alert alert-danger" role="alert">
-                                <strong>Validation error</strong>
-                                <?= $validation->listErrors(); ?>
-                            <?php endif; ?>
-
-
-                            </div>
                     </div>
                     <div class="card-body">
                         <?php if (!empty($users)) : ?>

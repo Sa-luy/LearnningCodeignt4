@@ -50,7 +50,7 @@
     <div class="d-flex align-items-center justify-content-between">
       <a href="index.html" class="logo d-flex align-items-center">
         <img src="<?=base_url('assets/img/logo.png')?>" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+        <span class="d-none d-lg-block">User Managent</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -276,6 +276,15 @@
   <!-- ======= Sidebar ======= -->
  <?=$this->include('layouts/aside')?>
   <main id="main" class="main">
+  <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active"><?php $title??'...'?></li>
+        </ol>
+      </nav>
+    </div>
     <?=$this->renderSection('content')?>
   </main>
  
@@ -283,7 +292,7 @@
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
-      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+      &copy; Copyright <strong><span>User Managent</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
       <!-- All the links in the footer should remain intact. -->

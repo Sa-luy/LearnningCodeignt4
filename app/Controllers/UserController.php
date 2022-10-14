@@ -9,17 +9,13 @@ class UserController extends BaseController
 {
     public function index()
     {
+        $data['title'] = 'List User';
         $keywords = $this->request->getPost('keywords');
         $userModel = new User();
         if (isset($keywords)) {
             $data['users']  = $userModel->findByKeywords($keywords);
-    //         echo "<pre>";
-    //    print_r ( $data['users'] );
-    //    echo "</pre>";
-    //    die();
-            
-        }else {
-            
+        } else {
+
             $data['users'] = $userModel->orderBy('id', 'DESC')->findAll();
         }
 
@@ -28,11 +24,12 @@ class UserController extends BaseController
     }
     public function create()
     {
-        return view('users/create');
+        $data['title'] = 'Create User';
+        return view('users/create',$data);
     }
     public function store()
     {
-
+        $data['title'] = 'Create User';
         $user_rule = [
             'name'             => 'required',
             'email'            => 'required|valid_email',
@@ -42,13 +39,14 @@ class UserController extends BaseController
             'gender'           => 'required',
             'righst_group_id'  => 'required',
         ];
-
+        
         if (strtolower($this->request->getMethod()) === 'post') {
             if ($this->validate($user_rule)) {
 
                 $userModel = model(User::class);
                 $userData = [
-                    'name'                 => $this->request->getPost('name'),
+                    // 'name'                 => $this->request->getPost('name'),
+                    'name'                 => $this->request->getVar('name'),
                     'email'                => $this->request->getPost('email'),
                     'phone'                => $this->request->getPost('phone'),
                     'address'              => $this->request->getPost('address'),
@@ -65,11 +63,14 @@ class UserController extends BaseController
                     return redirect()->to(base_url('users'))->with('message_noti', 'Success create new user!');
                 } else {
                     //redirect same page, and show flash error message
+                    echo 34567;
+                    die();
                     return redirect()->back()->with('message_error', 'Failed create new user!');
                 }
             } else {
                 // validation info
                 $data['validation'] = $this->validator;
+                return redirect()->back()->withInput()->with('message_error', 'Failed create new user, required!');
             }
         }
 
