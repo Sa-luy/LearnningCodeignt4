@@ -39,6 +39,10 @@ $routes->get('/', 'Home::index');
 $routes->get('users','UserController::index');
 $routes->get('usersCreate','UserController::create');
 $routes->post('usersCreate','UserController::store');
+$routes->get('usersEdit/(:num)','UserController::edit/$1');
+$routes->post('usersEdit/(:num)','UserController::update/$1');
+$routes->get('usersDestroy/(:num)','UserController::destroy/$1');
+
 
 /*
  * --------------------------------------------------------------------

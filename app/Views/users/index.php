@@ -16,7 +16,7 @@
                         <h4>List User</h4>
                         <?php if (isset($_SESSION['message_noti'])) : ?>
                             <div class="alert alert-success" role="alert">
-                                <?= $_SESSION['message_noti'] ?>
+                             <p><?= $_SESSION['message_noti'] ?></p>   
                             </div>
                         <?php endif; ?>
 
@@ -25,6 +25,12 @@
                                 <?= $_SESSION['message_error'] ?>
                             </div>
                         <?php endif; ?>
+                        <?php if (isset($validation)) : ?>
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Validation error</strong>
+                            <?= $validation->listErrors(); ?>
+                            <?php endif; ?>
+                           
 
                     </div>
                 </div>
@@ -54,10 +60,10 @@
                                         <td>SEO</td>
                                         <td><?= $user['day_of_birth'] ?></td>
                                         <td>
-                                            <a href="@"><i class="bi bi-pencil-fill"></i></a>
-                                            <a href="@"><i class="bi bi-eye"></i></a>
-                                            <a href="@"><i class="bi bi-trash"></i></a>
-
+                                            <a href="<?= base_url('usersEdit/'.$user['id']) ?>"><i class="bi bi-pencil-fill"></i></a>
+                                            <a href="#"><i class="bi bi-eye"></i></a>
+                                            <a href="<?= base_url('usersDestroy/'.$user['id']) ?>"><i class="bi bi-trash"></i></a>
+                                            
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
