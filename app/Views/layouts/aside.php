@@ -20,7 +20,7 @@
         </a>
       </li>
       <li>
-        <a href="components-accordion.html">
+        <a href="<?=base_url('usersExport')?> "onclick="return confirm('Do you want export excel');">
           <i class="bi bi-circle"></i><span>Excel</span>
         </a>
       </li>

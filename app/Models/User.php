@@ -41,4 +41,9 @@ class User extends Model
 
         return $users;
     }
+    public function rights_groups()
+    {
+        return $this->hasOne('rights_groups', 'App\Models\RightsGroup',);
+        // $this->hasOne('propertyName', 'model', 'foreign_key', 'local_key');
+    }
 }

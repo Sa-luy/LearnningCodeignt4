@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Models\User;
 use CodeIgniter\HTTP\Response;
+use Exception;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class UserController extends BaseController
 {
@@ -25,7 +28,7 @@ class UserController extends BaseController
     public function create()
     {
         $data['title'] = 'Create User';
-        return view('users/create',$data);
+        return view('users/create', $data);
     }
     public function store()
     {
@@ -39,10 +42,10 @@ class UserController extends BaseController
             'gender'           => 'required',
             'righst_group_id'  => 'required',
         ];
-        
+
         if (strtolower($this->request->getMethod()) === 'post') {
             if ($this->validate($user_rule)) {
-
+                // $this->db->trans_start();
                 $userModel = model(User::class);
                 $userData = [
                     // 'name'                 => $this->request->getPost('name'),
@@ -56,15 +59,13 @@ class UserController extends BaseController
                 ];
 
 
-                // esc => escape character, help prevent XSS attacks 
-                if ($userModel->save(esc($userData))) {
-
-                    //redirect same page, and show flash success message
+                try {
+                    $userModel->save(esc($userData));
+                    // $this->db->trans_complete();
                     return redirect()->to(base_url('users'))->with('message_noti', 'Success create new user!');
-                } else {
-                    //redirect same page, and show flash error message
-                    echo 34567;
-                    die();
+                } catch (Exception $e) {
+                    log_message('error', '[ERROR] {exception}', ['exception' => $e->getMessage()]);
+                    // $this->db->trans_rollback();
                     return redirect()->back()->with('message_error', 'Failed create new user!');
                 }
             } else {
@@ -85,6 +86,12 @@ class UserController extends BaseController
                 return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
             }
             $data['user'] = $user;
+            
+            echo "<pre>";
+            print_r ($user->with('rights_groups'));
+            echo "</pre>";
+            die();
+            
 
             return view('users/edit', $data);
         }
@@ -105,7 +112,7 @@ class UserController extends BaseController
             'righst_group_id'  => 'required',
         ];
         if ($this->validate($user_rule)) {
-
+            // $this->db->trans_start();
             if (empty($user)) {
                 $data['validation'] = 'User not exist';
                 return view('users/edit', $data);
@@ -120,13 +127,16 @@ class UserController extends BaseController
                 'rights_group_id '     => $this->request->getPost('righst_group_id'),
             ];
 
-            // esc => escape character, help prevent XSS attacks 
-
-            if ($userModel->update($id, $userData)) {
-                return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
-            } else {
+         
+            try {
+                // $this->db->trans_complete();
+                $userModel->update($id, $userData);
+              return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');  
+            } catch (\Exception $e) {
+                
                 return redirect()->back()->with('message_error', 'Failed update change!');
             }
+          
         } else {
             $data['validation'] = $this->validator;
         }
@@ -140,9 +150,91 @@ class UserController extends BaseController
         if ($data['user']) {
             //     $data['statusCode'] = 200;
             //   $this->response->setStatusCode(200);
-            return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
+            return redirect()->to(base_url('users'))->with('message_noti', 'Success delete user!');
         } else {
-            return redirect()->back()->with('message_error', 'Failed update change!');
+            return redirect()->back()->with('message_error', 'Failed delete user!');
         }
+    }
+    function exportUser()
+    {
+        $user = new User();
+
+        $data = $user->findAll();
+
+        $file_name = 'userExcel.xlsx';
+
+        $spreadsheet = new Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet()->fromArray($data, null, 'A3');
+
+        $sheet->setCellValue('A1', 'ID');
+
+        $sheet->setCellValue('B1', 'User Name');
+
+        $sheet->setCellValue('C1', 'Email Address');
+
+        $sheet->setCellValue('D1', 'User Phone');
+
+        $sheet->setCellValue('E1', 'Address');
+
+        $sheet->setCellValue('F1', 'Day of Birth');
+
+        $sheet->setCellValue('G1', 'Gender');
+
+        $sheet->setCellValue('H1', 'Role');
+
+        $sheet->setCellValue('I1', 'Create day');
+
+
+
+
+
+
+        $count = 2;
+
+        foreach ($data as $row) {
+            $sheet->setCellValue('A' . $count, $row['id']);
+
+            $sheet->setCellValue('B' . $count, $row['name']);
+
+            $sheet->setCellValue('C' . $count, $row['email']);
+
+            $sheet->setCellValue('D' . $count, $row['phone']);
+
+            $sheet->setCellValue('E' . $count, $row['address']);
+
+            $sheet->setCellValue('F' . $count, $row['day_of_birth']);
+
+            $sheet->setCellValue('G' . $count, $row['gender']);
+
+            $sheet->setCellValue('H' . $count, $row['rights_group_id']);
+
+            $sheet->setCellValue('I' . $count, $row['create_at']);
+
+
+            $count++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+
+        $writer->save($file_name);
+
+        header("Content-Type: application/vnd.ms-excel");
+
+        header('Content-Disposition: attachment; filename="' . basename($file_name) . '"');
+
+        header('Expires: 0');
+
+        header('Cache-Control: must-revalidate');
+
+        header('Pragma: public');
+
+        header('Content-Length:' . filesize($file_name));
+
+        flush();
+
+        readfile($file_name);
+
+        exit;
     }
 }

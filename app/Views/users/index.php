@@ -9,7 +9,7 @@
                         <div class="col-6 mb-3">
 
 
-                            <a href="<?= base_url('usersCreate') ?>" class="btn btn-secondary">Add User</a>
+                            <a href="<?= base_url('usersCreate') ?>" class="btn btn-secondary opacity-75">Add User</a>
                         </div>
                         <div class="col-6 mb-6">
                             <div class="search-bar">
