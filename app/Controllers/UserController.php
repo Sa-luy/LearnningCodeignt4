@@ -55,8 +55,11 @@ class UserController extends BaseController
                     'address'              => $this->request->getPost('address'),
                     'gender'               => $this->request->getPost('gender'),
                     'day_of_birth'         => $this->request->getPost('day_of_birth'),
-                    'rights_group_id '     => $this->request->getPost('righst_group_id'),
+                    'rights_group_id'     => $this->request->getPost('righst_group_id'),
                 ];
+                
+            
+                
 
 
                 try {
@@ -77,8 +80,9 @@ class UserController extends BaseController
 
         return view('users/create', $data);
     }
-    public function edit($id)
-    { {
+
+    public function show($id)
+    { 
             $data['title'] = "Edit";
             $userModel = new User();
             $user = $userModel->find($id);
@@ -87,14 +91,32 @@ class UserController extends BaseController
             }
             $data['user'] = $user;
             
-            echo "<pre>";
-            print_r ($user->with('rights_groups'));
-            echo "</pre>";
-            die();
+            // echo "<pre>";
+            // print_r ($user->with('rights_groups'));
+            // echo "</pre>";
+            // die();
+            
+
+            return view('users/show', $data);
+    }
+
+    public function edit($id)
+    { 
+            $data['title'] = "Edit";
+            $userModel = new User();
+            $user = $userModel->find($id);
+            if (empty($user)) {
+                return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
+            }
+            $data['user'] = $user;
+            
+            // echo "<pre>";
+            // print_r ($user->with('rights_groups'));
+            // echo "</pre>";
+            // die();
             
 
             return view('users/edit', $data);
-        }
     }
     public function update($id)
     {

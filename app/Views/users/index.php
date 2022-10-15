@@ -68,10 +68,10 @@
                                                 <a href="<?= base_url('usersEdit/' . $user['id']) ?>">
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a href="<?=base_url('usersShow/'. $user['id'])?>">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
-                                                <a href="<?= base_url('usersDestroy/' . $user['id']) ?>" onclick="return confirm('Delete movie data? You will not be able to recover it.');">
+                                                <a href="<?= base_url('usersDestroy/' . $user['id']) ?>" onclick="return confirm('Delete user data? You will not be able to recover it.');">
                                                     <i class="bi bi-trash text-danger"></i>
                                                 </a>
                                                 <!-- <a href="<?= base_url('usersDestroy/' . $user['id']) ?>" class="deleteUser" data-id="<?= $user['id'] ?>" data-link="<?= base_url('usersDestroy/' . $user['id']) ?>">
