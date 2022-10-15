@@ -22,20 +22,27 @@
                         </div>
                         <!-- <div class="col-6 mb-3"></div> -->
                     </div>
-                    <div class="col-6">
+                    <div class="row">
 
-                        <h4>List User</h4>
-                        <?php if (session('message_noti')) : ?>
-                            <div class="alert alert-success" role="alert">
-                                <p><?= session('message_noti') ?></p>
-                            </div>
-                        <?php endif; ?>
+                        <div class="col-6">
+                        <a href="<?=base_url('usersExport')?>" class="btn btn-success ml">Export</a>
 
-                        <?php if (session('message_error')) : ?>
-                            <div class="alert alert-danger" role="alert">
-                                <?= session('message_error')?>
-                            </div>
-                        <?php endif; ?>
+                            
+                            <?php if (session('message_noti')) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    <p><?= session('message_noti') ?></p>
+                                </div>
+                            <?php endif; ?>
+    
+                            <?php if (session('message_error')) : ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session('message_error')?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="col-6">
+                            <h4>List User</h4>
+                        </div>
                     </div>
                     <div class="card-body">
                         <?php if (!empty($users)) : ?>
