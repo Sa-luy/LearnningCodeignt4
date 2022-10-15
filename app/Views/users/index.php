@@ -25,18 +25,18 @@
                     <div class="row">
 
                         <div class="col-6">
-                        <a href="<?=base_url('usersExport')?>" class="btn btn-success ml">Export</a>
+                            <a href="<?= base_url('usersExport') ?>" class="btn btn-success ml">Export</a>
 
-                            
+
                             <?php if (session('message_noti')) : ?>
                                 <div class="alert alert-success" role="alert">
                                     <p><?= session('message_noti') ?></p>
                                 </div>
                             <?php endif; ?>
-    
+
                             <?php if (session('message_error')) : ?>
                                 <div class="alert alert-danger" role="alert">
-                                    <?= session('message_error')?>
+                                    <?= session('message_error') ?>
                                 </div>
                             <?php endif; ?>
                         </div>
@@ -69,13 +69,21 @@
                                             <td><?= $user['phone'] ?></td>
                                             <td><?= $user['address'] ?></td>
                                             <td><?= $user['gender'] ?></td>
-                                            <td>SEO</td>
+                                           <?php foreach ($rights_groups as $role) {?>
+                                            <?php if ($role->id == $user['rights_group_id']): ?>
+                                                <td><?=$role->name?></td>
+                                                <?php else: ?>
+                                                <td>
+                                                    <?= $user['rights_group_id'] ?>
+                                                </td>
+                                                <?php endif; ?>
+                                          <?php }?>
                                             <td><?= $user['day_of_birth'] ?></td>
                                             <td>
                                                 <a href="<?= base_url('usersEdit/' . $user['id']) ?>">
                                                     <i class="bi bi-pencil-fill"></i>
                                                 </a>
-                                                <a href="<?=base_url('usersShow/'. $user['id'])?>">
+                                                <a href="<?= base_url('usersShow/' . $user['id']) ?>">
                                                     <i class="bi bi-eye"></i>
                                                 </a>
                                                 <a href="<?= base_url('usersDestroy/' . $user['id']) ?>" onclick="return confirm('Delete user data? You will not be able to recover it.');">

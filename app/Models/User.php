@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use \Tatter\Relations\Traits\ModelTrait;
 
 class User extends Model
 {
+    protected $with = 'rights_groups';
     protected $table = 'users';
     protected $primaryKey = 'id';
     protected $allowedFields = [
@@ -41,9 +43,21 @@ class User extends Model
 
         return $users;
     }
-    public function rights_groups()
+    public function rights_groups($id=null)
     {
-        return $this->hasOne('rights_groups', 'App\Models\RightsGroup',);
-        // $this->hasOne('propertyName', 'model', 'foreign_key', 'local_key');
-    }
+        $db      = \Config\Database::connect();
+        $builder = $db->table('rights_group');
+        $builder->select('rights_group.id,rights_group.name,rights_group.description');
+        $builder->join('users', 'rights_group.id = users.rights_group_id');
+        $builder->distinct();
+        if($id){
+            $builder->where('users.id', $id);
+            $query = $builder->get();
+         return $query->getResult();    
+        }
+        $query = $builder->get();
+        return $query->getResult();   
+
+
+        }
 }

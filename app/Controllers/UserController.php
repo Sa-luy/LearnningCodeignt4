@@ -15,20 +15,20 @@ class UserController extends BaseController
         $data['title'] = 'List User';
         $keywords = $this->request->getPost('keywords');
         $userModel = new User();
-        if (isset($keywords)) {
-            $data['users']  = $userModel->findByKeywords($keywords);
-        } else {
-
-            $data['users'] = $userModel->orderBy('id', 'DESC')->findAll();
-        }
-
-
+        $data['rights_groups'] = $userModel->rights_groups();
+    if (isset($keywords)) {
+        $data['users']  = $userModel->findByKeywords($keywords);
+    } else {
+        
+        $data['users'] = $userModel->orderBy('id', 'DESC')->findAll();
+    }
         return view('users/index', $data);
     }
     public function create()
     {
         $data['title'] = 'Create User';
         return view('users/create', $data);
+        
     }
     public function store()
     {
@@ -57,9 +57,9 @@ class UserController extends BaseController
                     'day_of_birth'         => $this->request->getPost('day_of_birth'),
                     'rights_group_id'     => $this->request->getPost('righst_group_id'),
                 ];
-                
-            
-                
+
+
+
 
 
                 try {
@@ -82,41 +82,36 @@ class UserController extends BaseController
     }
 
     public function show($id)
-    { 
-            $data['title'] = "Edit";
-            $userModel = new User();
-            $user = $userModel->find($id);
-            if (empty($user)) {
-                return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
-            }
-            $data['user'] = $user;
-            
-            // echo "<pre>";
-            // print_r ($user->with('rights_groups'));
-            // echo "</pre>";
-            // die();
-            
+    {
+        $data['title'] = "Edit";
+        $userModel = new User();
+        $user = $userModel->find($id);
+        if (empty($user)) {
+            return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
+        }
 
-            return view('users/show', $data);
+        $data['user'] = $user;
+        $data['user']['rights_group'] = ($userModel->rights_groups($user['id'])[0]->name);
+        return view('users/show', $data);
     }
 
     public function edit($id)
-    { 
-            $data['title'] = "Edit";
-            $userModel = new User();
-            $user = $userModel->find($id);
-            if (empty($user)) {
-                return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
-            }
-            $data['user'] = $user;
-            
-            // echo "<pre>";
-            // print_r ($user->with('rights_groups'));
-            // echo "</pre>";
-            // die();
-            
+    {
+        $data['title'] = "Edit";
+        $userModel = new User();
+        $user = $userModel->find($id);
+        if (empty($user)) {
+            return redirect()->to(base_url('users'))->with('message_error', 'User not exist');
+        }
+        $data['user'] = $user;
 
-            return view('users/edit', $data);
+        // echo "<pre>";
+        // print_r ($user->with('rights_groups'));
+        // echo "</pre>";
+        // die();
+
+
+        return view('users/edit', $data);
     }
     public function update($id)
     {
@@ -149,16 +144,15 @@ class UserController extends BaseController
                 'rights_group_id '     => $this->request->getPost('righst_group_id'),
             ];
 
-         
+
             try {
                 // $this->db->trans_complete();
                 $userModel->update($id, $userData);
-              return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');  
+                return redirect()->to(base_url('users'))->with('message_noti', 'Success update change!');
             } catch (\Exception $e) {
-                
+
                 return redirect()->back()->with('message_error', 'Failed update change!');
             }
-          
         } else {
             $data['validation'] = $this->validator;
         }

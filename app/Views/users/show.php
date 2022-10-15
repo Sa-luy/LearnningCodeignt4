@@ -30,7 +30,7 @@
                         </div>
                         <div class="mb-3">
                             <span>Rore:</span>
-                            <p><?=$user['rights_group_id']?></p>
+                            <p><?=$user['rights_group']?></p>
                         </div>
                        
                     </div>

@@ -19,7 +19,7 @@
                             <?php endif; ?>
                         </div>
                     </div>
-                    <div class="row col-1">
+                    <div class="row col-3">
 
                         <a href="" class="btn btn-danger">Cancle</a>
 
@@ -32,35 +32,35 @@
 
                         <label for="">Name</label>
                         <input type="text" value="<?= old('name'); ?>" class="form-control" name="name">
-                        <?php if (isset($validation)) : ?>
+                        <?php if ($validation->getError('name')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('name'); ?>
                             </div>
                         <?php endif; ?>
                         <label for="">Email</label>
                         <input type="email" value="<?= old('email'); ?>" class="form-control" name="email">
-                        <?php if (isset($validation)) : ?>
+                        <?php if ( $validation->getError('email')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('email'); ?>
                             </div>
                         <?php endif; ?>
                         <label for="">Phone</label>
                         <input type="number" value="<?= old('phone'); ?>" class="form-control" name="phone">
-                        <?php if (isset($validation)) : ?>
+                        <?php if ($validation->getError('phone')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('phone'); ?>
                             </div>
                         <?php endif; ?>
                         <label for="">Address</label>
                         <input type="text" value="<?= old('address'); ?>" class="form-control" name="address">
-                        <?php if (isset($validation)) : ?>
+                        <?php if ($validation->getError('address')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('address'); ?>
                             </div>
                         <?php endif; ?>
                         <label for="">Day of birth</label>
                         <input type="date" value="<?= old('day_of_birth'); ?>" class="form-control" name="day_of_birth">
-                        <?php if (isset($validation)) : ?>
+                        <?php if ( $validation->getError('day_of_birth')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('day_of_birth'); ?>
                             </div>
@@ -71,7 +71,7 @@
                             <option value="male"<?php old('gender')?'selected':''; ?>>Male</option>
                             <option value="female" <?php old('gender')?'selected':''; ?>>Female</option>
                         </select>
-                        <?php if (isset($validation)) : ?>
+                        <?php if ($validation->getError('gender')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('gender'); ?>
                             </div>
@@ -84,7 +84,7 @@
                             <option value="2" <?php old('righst_group_id')?'selected':''; ?>>SEO</option>
                             <option value="3" <?php old('righst_group_id')?'selected':''; ?>>Maketing</option>
                         </select>
-                        <?php if (isset($validation)) : ?>
+                        <?php if ($validation->getError('righst_group_id')) : ?>
                             <div class="alert alert-danger" role="alert">
                                 <?= $validation->getError('righst_group_id'); ?>
                             </div>

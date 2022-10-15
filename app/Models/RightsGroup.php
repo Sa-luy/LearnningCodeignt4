@@ -13,9 +13,5 @@ class RightsGroup extends Model
         'description',
  
     ];
-    public function user()
-    {
-        return $this->belongsTo('user', 'App\Models\User');
-        // $this->belongsTo('propertyName', 'model', 'foreign_key', 'owner_key');
-    }
+ 
 }
